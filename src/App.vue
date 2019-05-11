@@ -1,8 +1,5 @@
 <template>
   <div id="app">
-    <!-- <img src="./assets/logo.png"> -->
-    <h1>content:</h1>
-    <hr>
     <router-view/>
   </div>
 </template>
@@ -20,13 +17,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
-  h1 {
-    color: #42b983;
-  }
-  hr {
-    height: 0px;
-    margin-bottom: 20px;
-  }
+  // margin-top: 60px;
 }
 </style>
