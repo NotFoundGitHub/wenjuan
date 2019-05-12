@@ -7,11 +7,6 @@
       :label-width="60"
       class="form"
     >
-      <FormItem label="昵称" prop="nickname">
-        <Input v-model="formValidate.nickname" placeholder="输入昵称" clearable>
-          <Icon type="md-person" slot="prefix"/>
-        </Input>
-      </FormItem>
       <FormItem label="邮箱" prop="username">
         <Input v-model="formValidate.username" placeholder="输入邮箱" clearable>
           <Icon type="md-mail" slot="prefix"/>
@@ -30,7 +25,7 @@
       </FormItem>
 
       <ButtonGroup shape="circle" class="footer" size="large">
-        <Button type="primary" @click="handleSubmit('formValidate')">注册</Button>
+        <Button type="primary" @click="handleSubmit('formValidate')">更新密码</Button>
       </ButtonGroup>
     </Form>
   </div>
@@ -41,19 +36,15 @@ import Api from "@/api/index";
 import { mapState } from "vuex";
 import { mapMutations } from "vuex";
 export default {
-  name: "regist",
+  name: "updatePass",
   data() {
     return {
       formValidate: {
-        nickname: "",
         username: "",
         vericode: "",
         password: ""
       },
       ruleValidate: {
-        nickname: [
-          { required: true, message: "用户名不能为空", trigger: "blur" }
-        ],
         username: [
           {
             required: true,
@@ -79,18 +70,13 @@ export default {
       }
     };
   },
-  computed: {
-    ...mapState(["username"])
-  },
   methods: {
-    ...mapMutations(["SET_USER"]),
     handleSubmit(name) {
       this.$refs[name].validate(valid => {
         if (valid) {
-          Api.regist(this.formValidate)
+          Api.update(this.formValidate)
             .then(res => {
               if (res.status == 1) {
-                this.SET_USER(this.formValidate.username);
                 this.$Message.success(res.msg);
                 this.$router.push({ name: "survey" });
               } else {
@@ -108,7 +94,7 @@ export default {
     handleVerify() {
       let username = this.formValidate.username.trim();
       if (username) {
-        Api.getVerify({ username })
+        Api.modifyPassword(this.formValidate)
           .then(res => {
             if (res.status == 1) {
               this.$Message.success(res.msg);

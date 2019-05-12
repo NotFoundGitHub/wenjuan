@@ -22,7 +22,7 @@
         <Button type="primary" @click="handleSubmit('formValidate')">
           <Icon type="ios-arrow-back"></Icon>登录
         </Button>
-        <Button>
+        <Button @click="handleLostPass">
           忘记密码
           <Icon type="ios-arrow-forward"></Icon>
         </Button>
@@ -32,7 +32,10 @@
 </template>
 
 <script>
-import Api from "../../api/index";
+import Api from "@/api/index";
+import { mapState } from "vuex";
+import { mapMutations } from "vuex";
+
 export default {
   name: "login",
   data() {
@@ -60,14 +63,31 @@ export default {
       }
     };
   },
+  computed: {
+    ...mapState(["username"])
+  },
   methods: {
+    ...mapMutations(["SET_USER", "SET_NICKNAME"]),
     handleSubmit(name) {
       this.$refs[name].validate(valid => {
         if (valid) {
+          // 登录
           Api.login(this.formValidate)
             .then(res => {
               if (res.status == 1) {
+                this.SET_USER(this.formValidate.username);
                 this.$Message.success(res.msg);
+                // 查找用户信息
+                Api.getUser().then(user => {
+                  if (user.status == 1) {
+                    this.SET_NICKNAME(user.data.nickname);
+                    this.$Message.success(user.msg);
+                    // 两个方法都执行成功才可以跳转路由
+                    this.$router.push({ name: "survey" });
+                  } else {
+                    this.$Message.error(res.msg);
+                  }
+                });
               } else {
                 this.$Message.error(res.msg);
               }
@@ -79,6 +99,9 @@ export default {
           this.$Message.error("输入数据错误");
         }
       });
+    },
+    handleLostPass() {
+      this.$router.push({ name: "updatePass" });
     },
     handleReset(name) {
       this.$refs[name].resetFields();

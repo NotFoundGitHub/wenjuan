@@ -1,5 +1,6 @@
 const state = {
-  msg: '一条数据',
-  num: 1
+  // username: '',
+  username: '468607058@qq.com',
+  nickname: '春天的小辣椒'
 }
 export default state;

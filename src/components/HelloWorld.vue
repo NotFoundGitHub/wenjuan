@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="hello">{{msg}}</div>
+    <div class="hello">首页</div>
     <button @click="add">add</button>
   </div>
 </template>
@@ -16,16 +16,10 @@ export default {
     };
   },
   computed: {
-    msg() {
-      let state = this.$store.state;
-      console.log(state);
-      return this.$store.state.num;
-    }
     // ...mapState(["msg"])
   },
   methods: {
     add() {
-      this.$store.commit("SET_NUM");
     }
   }
 };

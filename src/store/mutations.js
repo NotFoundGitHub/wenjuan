@@ -1,6 +1,9 @@
 const mutations = {
-  SET_NUM(state, val) {
-    state.num++;
+  SET_USER(state, username) {
+    state.username = username;
+  },
+  SET_NICKNAME(state, nickname) {
+    state.nickname = nickname;
   }
 }
 export default mutations
