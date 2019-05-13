@@ -21,7 +21,9 @@
       </div>
 
       <div slot="card_box">
-        <Card :style="{'min-width': '800px','max-width': '980px','margin': '0 auto'}">
+        <Card
+          :style="{'min-width': '800px','max-width': '980px','margin': '0 auto','background': '#e8eaec'}"
+        >
           <div style="min-height: 400px;">
             <router-view></router-view>
           </div>

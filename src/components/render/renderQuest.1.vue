@@ -1,7 +1,7 @@
 <script>
 export default {
   name: "renderBox",
-  props: ["form"],
+  props: ["form", "opList"],
   render(h) {
     return h(
       "div",
@@ -14,7 +14,7 @@ export default {
         h("div", { class: "header" }, [
           h("div", { class: "title" }, [
             this.form.required ? h("span", { class: "require" }, "(*)") : "",
-            h("span", this.form.questIndex + 1 + ". " + this.form.title)
+            h("span", this.form.title)
           ]),
 
           h(
@@ -28,7 +28,7 @@ export default {
                     : null
               }
             },
-            this.form.children.list.map(item => {
+            this.opList.map(item => {
               let opType = this.form.children.type;
               if (opType) {
                 return h(
@@ -37,8 +37,8 @@ export default {
                     class: "item",
                     props: {
                       title: item.title,
-                      label: opType != "i-option" ? item.label : null,
-                      value: opType == "i-option" ? item.label : null
+                      label: opType != "i-option" ? item.label : "",
+                      value: opType == "i-option" ? item.label : ""
                     }
                   },
                   item.title
@@ -62,20 +62,24 @@ export default {
 <style lang="less" scoped>
 .render {
   .header {
+    // display: flex;
+    // align-items: center;
     .title {
       font-weight: 600;
       font-size: 16px;
       .require {
         color: red;
       }
+      //   width: 80px;
     }
     .content {
       margin-top: 16px;
       width: 300px;
-
+      //   margin-left: 30px;
       .item {
         font-size: 14px;
         margin-right: 18px;
+        // margin-left: 24px;
       }
     }
   }
