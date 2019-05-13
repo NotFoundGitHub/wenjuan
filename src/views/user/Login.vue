@@ -13,7 +13,7 @@
         </Input>
       </FormItem>
       <FormItem label="密码" prop="password">
-        <Input v-model="formValidate.password" placeholder="输入密码">
+        <Input v-model="formValidate.password" placeholder="输入密码" type="password">
           <Icon type="md-key" slot="prefix"/>
         </Input>
       </FormItem>

@@ -12,6 +12,11 @@ const router = new Router({
       component: HelloWorld,
       // redirect: '/home'
     },
+    // {
+    //   path: '/layout',
+    //   name: 'myLayout',
+    //   component: () => import("@/components/layout/MyLayout"),
+    // },
     {
       path: '/form',
       name: "form",
@@ -77,20 +82,34 @@ const router = new Router({
             title: "更新问卷",
           },
         },
-
-
-
+        {
+          path: 'surveyPage',
+          name: "surveyPage",
+          component: () => import("@/views/survey/surveyPage"),
+          meta: {
+            notLogin: true,
+            title: '问卷内容'
+          }
+        }
       ]
     },
     {
-      path: '/surveyPage',
-      name: "surveyPage",
-      component: () => import("@/views/survey/surveyPage"),
+      path: '/quests',
+      name: "quests",
+      component: () => import("@/views/quests/index"),
       meta: {
-        notLogin: true
-      }
-    }
-
+        title: '问卷详情'
+      },
+      redirect: '/quests/addQuest',
+      children: [{
+        path: 'addQuest',
+        name: 'addQuest',
+        component: () => import("@/views/quests/addQuest"),
+        meta: {
+          title: '增加题目',
+        }
+      }, ]
+    },
 
 
   ]

@@ -31,8 +31,10 @@ const Api = {
   async addSurvey(data) {
     return (await axios.post('/api/survey', data)).data
   },
-  async getSurvey() {
-    return (await axios.get('/api/survey')).data
+  async getSurvey(data) {
+    return (await axios.get('/api/survey', {
+      params: data
+    })).data
   },
 
   async updateSurvey(data) {

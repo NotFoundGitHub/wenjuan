@@ -1,18 +1,24 @@
 <template>
   <div>
     <div class="card">
-      <div class="up" :style="{'background': pub?'#40a070':'#7a7374'}">
+      <!-- de2a18 7a7374 7e1671 -->
+      <span class="badge" @click="handleDel">x</span>
+      <div class="up" :style="{'background': pub?'#40a070':'#7a7374'}" @click="handleJump">
         <div class="header">
           <div class="createAt">{{createAt}}</div>
           <span class="pubState">截止：{{endAt}}</span>
+          <span class="del"></span>
         </div>
         <div class="title">{{title}}</div>
       </div>
       <div class="down">
         <div class="footer">
-          <span class="item">编辑</span>
-          <!-- <span class="item">发布</span> -->
+          <span class="item" @click="handleUpdate">编辑</span>
+
           <span class="item">数据</span>
+          <Tooltip :content="pageUrl" theme="light" max-width="200" class="shareUrl">
+            <span class="item">链接</span>
+          </Tooltip>
           <span class="item setPub">
             <i-switch size="large" v-model="pub" @on-change="changePub">
               <span slot="open">发布</span>
@@ -49,6 +55,10 @@ export default {
     id: {
       type: String,
       required: true
+    },
+    index: {
+      type: Number,
+      required: true
     }
   },
   data() {
@@ -60,6 +70,9 @@ export default {
   computed: {
     status() {
       return this.pub ? "发布" : "未发布";
+    },
+    pageUrl() {
+      return window.location.host + "/#/surveyPage/id/" + this.id;
     }
   },
   methods: {
@@ -68,6 +81,15 @@ export default {
       let _id = this.id;
       let isPublished = this.pub;
       this.$emit("changePubStatus", { _id, isPublished });
+    },
+    handleUpdate() {
+      this.$emit("updateSur", this.id);
+    },
+    handleDel() {
+      this.$emit("delSur", { _id: this.id, index: this.index });
+    },
+    handleJump() {
+      this.$emit("toQuests", { _id: this.id });
     }
   },
   created() {},
@@ -82,11 +104,26 @@ export default {
   width: 310px;
   border: 1px solid #dcdcdc;
   height: 190px;
-  overflow: hidden;
+
   /* padding: 15px; */
   margin-top: 20px;
   background: #fff;
   box-shadow: 0px 0px 6px #dcdcdc;
+  transition: all 0.5s ease;
+  position: relative;
+  .badge {
+    position: absolute;
+    /* left: 0; */
+    right: -10px;
+    top: -10px;
+    color: white;
+    background: #da4010;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 30px;
+    cursor: pointer;
+  }
 
   .up {
     // background-color: rgb(192, 44, 56);
@@ -130,6 +167,7 @@ export default {
     padding: 10px 20px;
     height: 64%;
     cursor: pointer;
+    overflow: hidden;
 
     .header {
       display: flex;
@@ -156,14 +194,28 @@ export default {
         cursor: pointer;
         &.setPub {
           // position: absolute;
-          margin-left: 120px;
+          margin-left: 80px;
         }
+      }
+      .shareUrl {
+        word-break: break-all;
       }
     }
   }
-  transition: all 0.5s ease;
 }
-
+// .card::after {
+//   content: "x";
+//   position: absolute;
+//   /* left: 0; */
+//   right: -10px;
+//   top: 10px;
+//   color: white;
+//   background: #da4010;
+//   width: 30px;
+//   height: 30px;
+//   line-height: 30px;
+//   border-radius: 30px;
+// }
 .card:hover {
   box-shadow: 0px 0px 6px #dcdcdc;
   // border: 0px solid #2672ff;
