@@ -49,6 +49,35 @@ const Api = {
 
   // 问卷详情页面
 
+  async addQuest(data) {
+    return (await axios.post('/api/quest', data)).data
+  },
+  async getQuest(data) {
+    return (await axios.get('/api/quest', {
+      params: data
+    })).data
+  },
+  async delQuest(data) {
+    return (await axios.delete('/api/quest', {
+      params: data
+    })).data
+  },
+
+  //回答页面
+  async addAnswer(data) {
+    return (await axios.post('/api/answer', data)).data
+  },
+
+  async getAnswer(data) {
+    return (await axios.get('/api/answer', {
+      params: data
+    })).data
+  },
+  async getHandleArr(data) {
+    return (await axios.get('/api/handleArr', {
+      params: data
+    })).data
+  },
 
 
 

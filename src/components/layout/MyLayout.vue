@@ -40,11 +40,23 @@ export default {
   },
   methods: {
     // 退出登录
+    ...mapMutations(["SET_NICKNAME"]),
     logout() {
       this.$router.push({ name: "login" });
     }
   },
-  mounted() {}
+  mounted() {
+    Api.getUser().then(user => {
+      if (user.status == 1) {
+        window.localStorage.setItem("username", user.data.username);
+        this.SET_NICKNAME(user.data.nickname);
+        this.$Message.success(user.msg);
+        // 两个方法都执行成功才可以跳转路由
+      } else {
+        this.$Message.error(res.msg);
+      }
+    });
+  }
 };
 </script>
 <style lang="less" scoped>

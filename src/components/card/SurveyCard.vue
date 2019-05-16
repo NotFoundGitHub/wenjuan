@@ -15,7 +15,7 @@
         <div class="footer">
           <span class="item" @click="handleUpdate">编辑</span>
 
-          <span class="item">数据</span>
+          <span class="item" @click="handleViewData">数据</span>
           <Tooltip :content="pageUrl" theme="light" max-width="200" class="shareUrl">
             <span class="item">链接</span>
           </Tooltip>
@@ -72,7 +72,7 @@ export default {
       return this.pub ? "发布" : "未发布";
     },
     pageUrl() {
-      return window.location.host + "/#/surveyPage/id/" + this.id;
+      return window.location.host + "/#/surveyPage?_id=" + this.id;
     }
   },
   methods: {
@@ -90,6 +90,9 @@ export default {
     },
     handleJump() {
       this.$emit("toQuests", { _id: this.id });
+    },
+    handleViewData() {
+      this.$emit("viewData", this.id);
     }
   },
   created() {},

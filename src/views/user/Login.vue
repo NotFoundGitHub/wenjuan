@@ -77,6 +77,10 @@ export default {
               if (res.status == 1) {
                 this.SET_USER(this.formValidate.username);
                 this.$Message.success(res.msg);
+                window.localStorage.setItem(
+                  "username",
+                  this.formValidate.username
+                );
                 // 查找用户信息
                 Api.getUser().then(user => {
                   if (user.status == 1) {

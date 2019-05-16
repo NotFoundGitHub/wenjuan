@@ -1,28 +1,17 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import store from '@/store/index';
+import iView from 'iview';
+Vue.use(iView);
 
 Vue.use(Router)
 
 const router = new Router({
   routes: [{
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld,
-      // redirect: '/home'
+      redirect: '/survey/mySurvey'
     },
-    // {
-    //   path: '/layout',
-    //   name: 'myLayout',
-    //   component: () => import("@/components/layout/MyLayout"),
-    // },
     {
-      path: '/form',
-      name: "form",
-      component: () => import("@/components/Home"),
-      // redirect: '/user/login'
-    }, {
       path: '/user',
       component: () => import("@/views/user/index"),
       children: [{
@@ -83,12 +72,11 @@ const router = new Router({
           },
         },
         {
-          path: 'surveyPage',
-          name: "surveyPage",
-          component: () => import("@/views/survey/surveyPage"),
+          path: 'surveyData',
+          name: 'surveyData',
+          component: () => import("@/views/survey/surveyData"),
           meta: {
-            notLogin: true,
-            title: '问卷内容'
+            title: "问卷数据",
           }
         }
       ]
@@ -98,18 +86,77 @@ const router = new Router({
       name: "quests",
       component: () => import("@/views/quests/index"),
       meta: {
-        title: '问卷详情'
+        title: '我的问卷'
       },
       redirect: '/quests/addQuest',
       children: [{
-        path: 'addQuest',
-        name: 'addQuest',
-        component: () => import("@/views/quests/addQuest"),
-        meta: {
-          title: '增加题目',
-        }
-      }, ]
+          path: 'addQuest',
+          name: 'addQuest',
+          component: () => import("@/views/quests/addQuest"),
+          meta: {
+            title: '增加题目',
+            next: 'questDeatil',
+            index: 0,
+          }
+        },
+        {
+          path: 'questDeatil',
+          name: 'questDeatil',
+          component: () => import("@/views/quests/questDeatil"),
+          meta: {
+            title: '问卷详情',
+            next: 'publishQuest',
+            pre: 'addQuest',
+            index: 1,
+          }
+        },
+        {
+          path: 'publishQuest',
+          name: 'publishQuest',
+          component: () => import("@/views/quests/publishQuest"),
+          meta: {
+            title: '发布问卷',
+            pre: 'questDeatil',
+            index: 2,
+          }
+        },
+
+      ]
     },
+    {
+      path: '/home',
+      component: () => import("@/views/home/index"),
+      redirect: '/home/surveyPage',
+      meta: {
+        notLogin: true,
+
+      },
+      children: [{
+        path: 'surveyPage',
+        name: "surveyPage",
+        component: () => import("@/views/home/surveyPage"),
+        meta: {
+          notLogin: true,
+        }
+      }]
+    },
+    {
+      path: '/thanks',
+      name: "thanks",
+      component: () => import("@/views/home/thanks"),
+      meta: {
+        notLogin: true,
+      }
+
+    },
+    {
+      path: '*',
+      name: "404",
+      component: () => import("@/views/home/not"),
+      meta: {
+        notLogin: true,
+      }
+    }
 
 
   ]
@@ -119,29 +166,20 @@ router.beforeEach((to, from, next) => {
   // to: Route: 即将要进入的目标 路由对象
   // from: Route: 当前导航正要离开的路由
   // next: Function: 一定要调用该方法来 resolve 这个钩子。执行效果依赖 next 方法的调用参数。
-
+  iView.LoadingBar.start();
   let username = store.state.username
-  if (to.meta.notLogin || username) {
+  let user = window.localStorage.getItem("username");
+  if (to.meta.notLogin || username || user) {
     next()
   } else {
     next({
       name: 'login'
     })
   }
-  // 未登录状态；当路由到nextRoute指定页时，跳转至login
-  // if (nextRoute.indexOf(to.name) >= 0) {  
-  //   if (!isLogin) {
-  //     console.log('what fuck');
-  //     router.push({ name: 'login' })
-  //   }
-  // }
-  // // 已登录状态；当路由到login时，跳转至home 
-  // if (to.name === 'login') {
-  //   if (isLogin) {
-  //     router.push({ name: 'home' });
-  //   }
-  // }
-  // next();
+
+});
+router.afterEach(route => {
+  iView.LoadingBar.finish();
 });
 
 

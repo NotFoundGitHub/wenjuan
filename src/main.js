@@ -6,6 +6,10 @@ import router from './router'
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
 import store from './store/index'; //引入store
+import VueClipboard from 'vue-clipboard2'
+
+VueClipboard.config.autoSetContainer = true // add this line
+Vue.use(VueClipboard)
 
 // import axios from 'axios'
 // Vue.prototype.$axios = axios //将axios挂载在Vue实例原型上

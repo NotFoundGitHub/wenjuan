@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://127.0.0.1:12345',
+        target: 'http://127.0.0.1:12345/api',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
@@ -57,8 +57,9 @@ module.exports = {
     /**
      * Source Maps
      */
-
-    productionSourceMap: true,
+    // 打包时候产生map文件默认true
+    // productionSourceMap: true,
+    productionSourceMap: false,
     // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',
 

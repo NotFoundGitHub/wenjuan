@@ -14,6 +14,7 @@
         :index="index"
         @changePubStatus="handleUpdatePub"
         @updateSur="handleUpdate"
+        @viewData="handleViewData"
         @delSur="handleDel"
         @toQuests="handleDetail"
       ></survey-card>
@@ -100,6 +101,9 @@ export default {
     handleDel(data) {
       this.delItem = data;
       this.isDel = true;
+    },
+    handleViewData(_id) {
+      this.$router.push({ name: "surveyData", query: { _id } });
     },
     handleDetail(data) {
       this.$router.push({ name: "addQuest", query: { _id: data._id } });

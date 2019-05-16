@@ -92,6 +92,10 @@ export default {
               if (res.status == 1) {
                 this.SET_USER(this.formValidate.username);
                 this.$Message.success(res.msg);
+                window.localStorage.setItem(
+                  "username",
+                  this.formValidate.username
+                );
                 this.$router.push({ name: "survey" });
               } else {
                 this.$Message.warning(res.msg);
