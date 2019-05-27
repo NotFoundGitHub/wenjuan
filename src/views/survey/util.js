@@ -1,5 +1,6 @@
+import Api from '@/api/index';
 export default {
-  initCharts(questList, answerList) {
+  async initCharts(questList, answerList) {
     let questArr = [];
     questList.map((item) => {
       questArr.push({
@@ -28,6 +29,7 @@ export default {
     // 聚类
     let ansTemp = [];
 
+
     answerArr.map((item) => {
       if (!ansTemp[+(item.questIndex)]) {
         ansTemp[+(item.questIndex)] = [];
@@ -36,7 +38,7 @@ export default {
       ansTemp[+(item.questIndex)].push(item)
     })
     answerArr = ansTemp;
-
+    // console.log("answerArr", answerArr)
     // 统计
     let list = [];
     answerArr.map(quest => {
@@ -50,7 +52,7 @@ export default {
       })
       list.push(obj)
     })
-
+    // console.log("list", list)
 
     let rowList = [];
 
@@ -63,7 +65,12 @@ export default {
       let answer = list[i]
 
       if (quest.type == 'i-input') {
-        input.push(i)
+        // input.push(i)
+        let keys = "";
+        for (let key in answer) {
+          keys += key;
+        }
+        input.push({index:i,keys})
       }
 
       // 处理多选问题
@@ -82,6 +89,8 @@ export default {
           }
         }
       }
+
+
       // 格式化调整
       for (let key in answer) {
         if (key == '') {
@@ -122,8 +131,16 @@ export default {
 
 
     if (input.length) {
-      input.map(i => {
-        rowList[i].row.rows = [];
+      input.map(async (o, i) => {
+        let py = await Api.getPythonData({
+          data: o.keys
+        });
+        let row = {
+          userType: 'wordcloud',
+          columns: ['word', 'count'],
+          rows: py.data
+        };
+        rowList[o.index].row = row;
       })
     }
     return rowList;

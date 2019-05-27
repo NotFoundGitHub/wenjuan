@@ -79,6 +79,9 @@ const Api = {
     })).data
   },
 
+  async getPythonData(data) {
+    return (await axios.post('/pyapi/', data)).data;
+  }
 
 
 }

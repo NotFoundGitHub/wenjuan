@@ -7,6 +7,7 @@ Vue.use(iView);
 Vue.use(Router)
 
 const router = new Router({
+  // mode: 'history',
   routes: [{
       path: '/',
       redirect: '/survey/mySurvey'
@@ -79,6 +80,7 @@ const router = new Router({
             title: "问卷数据",
           }
         }
+
       ]
     },
     {

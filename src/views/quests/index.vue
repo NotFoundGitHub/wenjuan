@@ -78,9 +78,12 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(["SET_USER"]),
     // 退出登录
     logout() {
       this.$router.push({ name: "login" });
+      window.localStorage.removeItem("username");
+      this.SET_USERNAME("");
     },
     handlePre() {
       let pre = this.$route.meta.pre;

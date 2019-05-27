@@ -9,7 +9,9 @@
           </div>
         </div>
 
-        <div class="helpInfo" v-if="item.row.rows.length===0">暂无数据</div>
+        <div class="helpInfo" v-if="item.row.userType&&item.row.userType == 'wordcloud'">
+          <ve-wordcloud :data="item.row" :settings="wordcloudSettings"></ve-wordcloud>
+        </div>
         <div class="chart" v-else>
           <ve-pie v-if="item.showType=='pie'" :data="item.row"></ve-pie>
           <ve-bar v-else :data="item.row"></ve-bar>
@@ -27,6 +29,7 @@
 <script>
 import VeBar from "v-charts/lib/bar.common";
 import VePie from "v-charts/lib/pie.common";
+import VeWordcloud from "v-charts/lib/wordcloud.common";
 import Api from "@/api/index";
 import util from "./util";
 
@@ -34,7 +37,8 @@ export default {
   name: "surveyData",
   components: {
     VeBar,
-    VePie
+    VePie,
+    VeWordcloud
   },
   props: {},
   data() {
@@ -44,6 +48,26 @@ export default {
       chartSettings: {
         // metrics: ["访问用户", "下单用户"],
         // dimension: ["日期"]
+      },
+      wordcloudSettings: {
+        // shape: "cardioid",
+        color: [
+          "#f00",
+          "#0f0",
+          "#00f",
+          "#0099CC",
+          "#CC0033",
+          "#CC3333",
+          "#333333",
+          "#003300",
+          "#663300",
+          "#993399",
+          "#009966",
+          "#FF6666",
+          "#996699"
+        ],
+        sizeMin: 20,
+        sizeMax: 80
       },
       chartData: {
         columns: ["日期", "访问用户"],
@@ -76,8 +100,10 @@ export default {
         if (res.status == 1) {
           this.$Message.success(res.msg);
           let { questList, answerList } = res.list;
-          let rowList = util.initCharts(questList, answerList);
-          this.rowList = rowList;
+          util.initCharts(questList, answerList).then(res => {
+            console.log("row", res);
+            this.rowList = res;
+          });
         } else {
           this.$Message.error(res.msg);
         }

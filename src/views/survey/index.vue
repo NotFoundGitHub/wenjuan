@@ -45,12 +45,22 @@ export default {
     ...mapState(["username", "nickname"])
   },
   methods: {
+    ...mapMutations(["SET_USER"]),
     // 退出登录
     logout() {
       this.$router.push({ name: "login" });
+      window.localStorage.removeItem("username");
+      this.SET_USER("");
     }
   },
-  mounted() {}
+  mounted() {
+    let user = window.localStorage.getItem("username");
+    if (user) {
+      this.SET_USER(user);
+    } else {
+      this.$router.push({ name: "login" });
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

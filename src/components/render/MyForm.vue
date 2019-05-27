@@ -39,7 +39,6 @@ export default {
   props: {
     list: {
       type: Array,
-      default: () => [],
       required: true
     }
   },
@@ -61,6 +60,7 @@ export default {
       }
     },
     reset() {
+      console.log("重置");
       this.list.forEach(
         (item, index) => (item.value = this.oriList[index].value)
       );
@@ -68,6 +68,7 @@ export default {
   },
   mounted() {
     this.oriList = clonedeep(this.list);
+    console.log("mount", this.list);
   }
 };
 </script>

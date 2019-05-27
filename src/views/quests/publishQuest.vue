@@ -61,7 +61,8 @@ export default {
   created() {},
   mounted() {
     let _id = this.$route.query._id;
-    let url = window.location.host + "/#/surveyPage?_id=" + _id;
+    let url =
+      "http://" + window.location.host + "/#/home/surveyPage?_id=" + _id;
     this.value = url;
     this.makeQRCode(url);
   }

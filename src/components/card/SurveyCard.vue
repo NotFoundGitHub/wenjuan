@@ -72,7 +72,7 @@ export default {
       return this.pub ? "发布" : "未发布";
     },
     pageUrl() {
-      return window.location.host + "/#/surveyPage?_id=" + this.id;
+      return window.location.host + "/#/home/surveyPage?_id=" + this.id;
     }
   },
   methods: {
